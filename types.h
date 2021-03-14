@@ -25,12 +25,12 @@ struct test {
     int (*fp)();
 };
 
-union {
+union mword8_type {
     unsigned char bytes[UL_LEN/8];
     ul val;
-} mword8;
+};
 
-union {
+union mword16_type {
     unsigned short u16s[UL_LEN/16];
     ul val;
-} mword16;
+};
