@@ -27,6 +27,9 @@ char progress[] = "-\\|/";
 #define PROGRESSOFTEN 2500
 #define ONE 0x00000001L
 
+union mword8_type mword8;
+union mword16_type mword16;
+
 /* Function definitions. */
 
 int compare_regions(ulv *bufa, ulv *bufb, size_t count) {

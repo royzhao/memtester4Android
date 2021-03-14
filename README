@@ -1,12 +1,57 @@
+Modified from https://github.com/royzhao/memtester4Android.git to build
+using `ndk-build` without any dependencies other than Android NDK.
+
+This is based on memtester version 4.3.0, tested on 32-bit ARM (armeabi-v7a).
+Requires root to test more than 64MB of memory.
+
+## Prerequisites
+
+Install Android NDK. The easiest way to do this is:
+
+1. [Install Android Studio](https://developer.android.com/studio/install).
+
+2. Open Android Studio, and under Configure or Tools, open the SDK Manager.
+
+3. Under Appearance and Behavior > System Settings > Android SDK, click on
+   the SDK Tools tab.
+
+4. Note the Android SDK Location (you will need this path later, typically it
+   will be ~/Android/Sdk), and make sure that it doesn't contain spaces.
+
+5. Tick the checkbox next to NDK (Side by side) and Apply.
+
+6. Accept the EULAs and install the NDK (default path is ~/Android/Sdk/ndk/).
+
 =====================================
-usage:
- cd android/
- source ./build/envsetup.sh
- lunch xx
- cd android/external/
- git clone  https://github.com/royzhao/memtester4Android.git
+
+Usage:
+ # Clone this repository.
+ git clone https://github.com/akovacs/memtester4Android
  cd memtester4Android
- mm
+
+ # Make sure there are no spaces in the path to this directory:
+ pwd
+ 
+ # Configure environment variables
+ export NDK_PROJECT_PATH=`pwd`
+ export APP_PLATFORM=android-16
+
+ # Compile the binary using your version of the Android NDK's ndk-build
+ # Path to ndk-build within the Android SDK Location you recorded earlier
+ ~/Android/Sdk/ndk/23.0.7123448/ndk-build .
+ 
+ # Push the appropriate binary to your device (here I'm using 32-bit ARM)
+ # You can also use arm64-v8a for 64-bit ARM, or x86
+ adb push libs/armeabi-v7a/memtester /data/local/tmp/
+ adb shell chmod 777 /data/local/tmp/memtester
+ 
+ # Open an adb shell into your device
+ adb shell
+ # Run as root, otherwise you will be limited to testing only 64MB memory
+ su
+ # Acquire and test 600MB of memory, run 3 loops
+ /data/local/tmp/memtester 600M 3
+
 =====================================
 
                                    memtester
